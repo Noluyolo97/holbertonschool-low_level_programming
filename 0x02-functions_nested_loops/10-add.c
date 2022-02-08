@@ -1,14 +1,5 @@
-#include "holberton.h"
-/**
- * add - realice the addition of two numbers
- * @a: first input
- * @b: second input
- * Return: the value of the addition
- */
-int add(int a, int b)
+#include "main.h"
+int add(int x, int y)
 {
-	int ad;
-
-	ad = a + b;
-	return (ad);
+	return (x + y);
 }
