@@ -1,4 +1,4 @@
-#include "holberton.h"
+#include "main.h"
 #include <unistd.h>
 /**
  * print_sign - check if the input is positive, negative or zero
