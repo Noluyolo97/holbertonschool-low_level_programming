@@ -1,4 +1,4 @@
-#include "main.h"
+#include "-putchar"
 /**
  * print_times_table  - give you the multiplication table conditinated by n
  * @n: input that configure the table
