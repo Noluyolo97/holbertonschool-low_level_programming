@@ -1,4 +1,4 @@
-#include "holberton.h"
+#include "main.h"
 /**
  * jack_bauer - give you the time from 00:00 to 23:59
  *
