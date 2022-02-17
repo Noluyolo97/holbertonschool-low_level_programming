@@ -1,52 +1,47 @@
 #include "main.h"
+
 /**
- * infinite_add - prints the add of two numbers
- * @n1: input string value 1
- * @n2: input string value 2
- * @r:buffer
- * @size_r: size of buffer
- * Return: number
+ *infinite_add - add two numbers.
+ *
+ *@n1: first number.
+ *@n2: second number.
+ *@r: result.
+ *@size_r: result size.
+ *Return: the addition of n1 and n2.
  */
+
 char *infinite_add(char *n1, char *n2, char *r, int size_r)
 {
-	int cont1 = 0, cont2 = 0, grande, c = 0;
-	int sum, aux, val1, val2;
+	int add = 0, len1, len2, i, j;
 
-	while (*(n1 + cont1) != '\0')
-		cont1++;
-	while (*(n2 + cont2) != '\0')
-		cont2++;
-	if (cont1 > cont2)
-		grande = cont1;
-	else
-		grande = cont2;
-	r[grande + 1] = '\0';
-	aux = grande;
-	while (grande >= 0)
+	for (len1 = 0; n1[len1]; len1++)
+	;
+	for (len2 = 0; n2[len2]; len2++)
+	;
+	if (len1 > size_r || len2 > size_r)
+		return (0);
+	len1--;
+	len2--;
+	size_r--;
+	for (i = 0; i < size_r; i++, len1--, len2--)
 	{
-		if (cont1 > 0)
-			val1 = (n1[cont1 - 1]) - '0';
-		else
-			val1 = 0;
-		if (cont2 > 0)
-			val2 = (n2[cont2 - 1]) - '0';
-		else
-			val2 = 0;
-		sum = (val1 + val2 + c) % 10;
-		c = (val1 + val2 + c) / 10;
-		r[grande] = sum + '0';
-		grande--;
-		cont1--;
-		cont2--;
+		if (len1 >= 0)
+			add += n1[len1] - '0';
+		if (len2 >= 0)
+			add += n2[len2] - '0';
+		if (len1 < 0 && len2 < 0 && add == 0)
+			break;
+		r[i] = add % 10 + '0';
+		add /= 10;
 	}
-	if ((size_r - 1) <= aux)
-	{ return (0);
-	}
-	else
+	r[i] = '\0';
+	if (len1 >= 0 || len2 >= 0 || add)
+		return (0);
+	for (i--, j = 0; i > j; i--, j++)
 	{
-		if (*(r + 0) == '0')
-			return (r + 1);
-		else
-			return (r);
+		add = r[i];
+		r[i] = r[j];
+		r[j] = add;
 	}
+	return (r);
 }
