@@ -1,57 +1,53 @@
 #include "main.h"
-
-int check_palindrome(char *s);
-
 /**
-  * is_palindrome - Returns if a string is palindrome
-  * @s: the string value to be checked
-  *
-  * Return: integer value
-  */
-int is_palindrome(char *s)
+ * lenght - size of string
+ * @s: initial string
+ * Return: lenght
+ */
+int lenght(char *s)
 {
-	if (*s == '0')
-		return (1);
-
-	return (check_palindrome(s));
-}
-
-/**
-  * check_palindrome - Check if a string is palindrome
-  * @s: the string value to be checked
-  *
-  * Return: integer value
-  */
-int check_palindrome(char *s)
-{
-	int l = _strlen_recursion(s) - 1;
-
-	if (*s == s[l])
+	if (*s != '\0')
 	{
 		s++;
-		l--;
+		return (1 + lenght(s));
 	}
 	else
 	{
 		return (0);
 	}
-
-	return (1);
 }
 
 /**
-  * _strlen_recursion - Get the length of a string
-  * @s: the string to get the length
-  *
-  * Return: the string length
-  */
-int _strlen_recursion(char *s)
+ * comp - compare two chars
+ * @s: string
+ * @size: lenght of s
+ * @inicio: variable to go through the string
+ * Return: 1 or 0 if it's palindrome
+ */
+int comp(char *s, int size, int inicio)
 {
-	if (*s == '\0')
+	if (s[inicio] == s[size - 1 - inicio])
+	{
+		if (inicio <= (size / 2))
+		{
+			return (comp(s, lenght(s), inicio + 1));
+		}
+		else
+		{
+			return (1);
+		}
+	}
+	else
 	{
 		return (0);
 	}
-
-	s++;
-	return (_strlen_recursion(s) + 1);
+}
+/**
+ * is_palindrome - gives if it is prime number
+ * @s: number
+ * Return: 1 if is palindrome or 0 if not
+ */
+int is_palindrome(char *s)
+{
+	return (comp(s, lenght(s), 0));
 }
