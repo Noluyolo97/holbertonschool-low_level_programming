@@ -1,111 +1,48 @@
-#include "main.h"
-
+int recursive_check(char *s1, char *s2, int wildC);
 /**
- * prueba - test if are equal if not return c or b
- * @a: string one
- * @b: string two
- * @c: string that save the original b
- * Return: a value or go to match
- */
-
-int prueba(char *a, char *b, char *c)
-{
-	if (a[0] == '\0' && b[0] == '\0')
-	{
-		return (1);
-	}
-	else
-	{
-		if (a[0] == b[0])
-		{
-			a++;
-			b++;
-			return (prueba(a, b, c));
-		}
-		else
-		{
-			if (b[0] == '*')
-			{
-				return (match(a, b));
-			}
-			else
-			{
-				return (match(a, c));
-			}
-		}
-	}
-}
-/**
- * match - compare char by char if are the same go to prueba
- * @a: string one
- * @b: string two
- * Return: value 1 or 0
- */
-int  match(char *a, char *b)
-{
-	if (b[0] == '*')
-	{
-		b++;
-		return (match(a, b));
-	}
-	else
-	{
-		if (a[0] != b[0])
-		{
-			if (a[0] == '\0')
-			{
-				return (0);
-			}
-			else
-			{
-				a++;
-				return (match(a, b));
-			}
-		}
-		else
-		{
-			return (prueba(a, b, b));
-		}
-	}
-}
-/**
- * wildcmp - prints if both strings are considered identical
- * @s1: string one
- * @s2: string two
- * Return: 1 if are considered identical, 0 if not
+ * wildcmp - compares two strings, supports wildcard '*'
+ *
+ * @s1: string 1 to compare to s2
+ * @s2: string 2 to compare to s1
+ *
+ * Return: 1 if identical, 0 otherwise, -1 for error
  */
 int wildcmp(char *s1, char *s2)
 {
-	if (s2[0] == '*')
+	return (recursive_check(s1, s2, 0));
+}
+/**
+ * recursive_check - checks for wild cards recursively
+ *
+ * @s1: string 1 to check (no wild cards)
+ * @s2: string to to check (can contain wildcards)
+ * @wildC: counter to see if wildcard is present
+ *
+ * Return: 1 if identical, 0 for not, -1 for error
+ */
+int recursive_check(char *s1, char *s2, int wildC)
+{
+	if (*s1 == '\0' && *s2 == '\0')
 	{
-		if (s2[1] == '*')
-		{
-			s2++;
-			return (wildcmp(s1, s2));
-		}
-		else
-		{
-			return (match(s1, s2));
-		}
+		return (1);
 	}
-	else
+	if (*s2 == '*')
+		return (recursive_check(s1, s2 + 1, ++wildC));
+	else if (*s1 != *s2 && wildC > 0) /* skip to next rel char */
 	{
-		if (s1[0] == s2[0])
-		{
-			if (s1[0] != '\0' && s2[0] != '\0')
-			{
-				s1++;
-				s2++;
-				return (wildcmp(s1, s2));
-			}
-			else
-			{
-				return (1);
-			}
-		}
-		else
-		{
+		if (!*s1)
 			return (0);
-		}
+		return (recursive_check(s1 + 1, s2, wildC));
 	}
+	else if (*s1 == *s2 && wildC == 0) /* char match, next char for each str */
+		return (recursive_check(s1 + 1, s2 + 1, 0));
+	else if (*s1 == *s2 && wildC > 0)
+	{
+		if (!recursive_check(s1 + 1, s2 + 1, 0))
+			return (recursive_check(s1 + 1, s2, wildC));
+		return (recursive_check(s1 + 1, s2 + 1, wildC));
+	}
+	else if (*s1 != *s2 && wildC == 0) /* non matching and no wildC */
+		return (0);
+	return (-1); /* something unexpected occured, return -1 for error */
 }
